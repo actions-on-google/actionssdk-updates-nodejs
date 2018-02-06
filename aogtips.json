@@ -1,0 +1,81 @@
+{
+    "actions": [
+      {
+        "description": "Default Welcome Intent",
+        "name": "MAIN",
+        "fulfillment": {
+          "conversationName": "welcome"
+        },
+        "intent": {
+          "name": "actions.intent.MAIN"
+        }
+      },
+      {
+        "description": "Tell a tip",
+        "name": "Tell tip",
+        "fulfillment": {
+          "conversationName": "tellTip"
+        },
+        "intent": {
+          "name": "tell.tip",
+          "parameters": [{
+            "name": "category",
+            "type": "SchemaOrg_Text"
+          }],
+          "trigger": {
+            "queryPatterns": [
+              "$SchemaOrg_Text:category",
+              "$SchemaOrg_Text:category category"
+            ]
+          }
+        }
+      },
+      {
+        "description": "Tell the latest tip",
+        "name": "Tell latst tip",
+        "fulfillment": {
+          "conversationName": "tellLatestTip"
+        },
+        "intent": {
+          "name": "tell.latest.tip",
+          "trigger": {
+            "queryPatterns": [
+              "the latest tip"
+            ]
+          }
+        }
+      },
+      {
+        "description": "Configure Update Intent",
+        "name": "Configure update",
+        "fulfillment": {
+          "conversationName": "configureUpdate"
+        },
+        "intent": {
+          "name": "actions.intent.CONFIGURE_UPDATES"
+        }
+      }
+    ],
+    "conversations": {
+      "welcome": {
+        "name": "welcome",
+        "url": "YOUR_ENDPOINT_URL",
+        "fulfillmentApiVersion": 2
+      },
+      "tellTip": {
+        "name": "tellTip",
+        "url": "YOUR_ENDPOINT_URL",
+        "fulfillmentApiVersion": 2
+      },
+      "tellLatestTip": {
+        "name": "tellLatestTip",
+        "url": "YOUR_ENDPOINT_URL",
+        "fulfillmentApiVersion": 2
+      },
+      "configureUpdate": {
+        "name": "configureUpdate",
+        "url": "YOUR_ENDPOINT_URL",
+        "fulfillmentApiVersion": 2
+      }
+    }
+  }
