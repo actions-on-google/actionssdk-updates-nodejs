@@ -33,7 +33,8 @@ const Intents = {
 };
 /** Query pattern parameters */
 const Parameters = {
-  CATEGORY: 'category'
+  CATEGORY: 'category',
+  UPDATE_INTENT: 'UPDATE_INTENT'
 };
 
 /** Collections and fields names in Firestore */
@@ -48,6 +49,7 @@ const FirestoreNames = {
   USER_ID: 'userId'
 };
 
+/** App strings */
 const RANDOM_CATEGORY = 'random';
 const RECENT_TIP = 'most recent';
 const DAILY_NOTIFICATION_SUGGESTION = 'Send daily';
@@ -61,7 +63,7 @@ exports.aogTips = functions.https.onRequest((request, response) => {
   console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(request.body));
 
-  // Fulfill action business logic
+  // Retrieve and tell a tip from the database.
   function tellTip (app, category) {
     if (app.getArgument(Parameters.CATEGORY)) {
       category = app.getArgument(Parameters.CATEGORY);
@@ -85,8 +87,8 @@ exports.aogTips = functions.https.onRequest((request, response) => {
           .addSimpleResponse(tip.get(FirestoreNames.TIP))
           .addBasicCard(card);
         if (!app.userStorage[DAILY_NOTIFICATION_ASKED]) {
-          richResponse.addSuggestions(DAILY_NOTIFICATION_SUGGESTION);
-          app.userStorage[DAILY_NOTIFICATION_ASKED] = true;
+        richResponse.addSuggestions(DAILY_NOTIFICATION_SUGGESTION);
+        app.userStorage[DAILY_NOTIFICATION_ASKED] = true;
         }
         app.ask(richResponse);
       }).catch(function (error) {
@@ -94,6 +96,7 @@ exports.aogTips = functions.https.onRequest((request, response) => {
       });
   }
 
+  // Retrieve and tell the most recently added tip
   function tellLatestTip (app) {
     db.collection(FirestoreNames.TIPS)
       .orderBy(FirestoreNames.CREATED_AT, 'desc')
@@ -120,6 +123,7 @@ exports.aogTips = functions.https.onRequest((request, response) => {
       });
   }
 
+  // Welcome message
   function welcome (app) {
     getCategoriesFromDB()
       .then(function (uniqueCategories) {
@@ -163,6 +167,7 @@ exports.aogTips = functions.https.onRequest((request, response) => {
     });
   }
 
+  // Confirm outcome of opt-in for daily updates.
   function finishUpdateSetup (app) {
     if (app.isUpdateRegistered()) {
       app.tell("Ok, I'll start giving you daily updates.");
@@ -171,17 +176,20 @@ exports.aogTips = functions.https.onRequest((request, response) => {
     }
   }
 
+  // Start opt-in flow for push notifications
   function setupPush (app) {
     console.log('asking permission');
     app.askForUpdatePermission(Intents.TELL_LATEST_TIP);
   }
 
+  // Save intent and user id if user gave consent.
   function finishPushSetup (app) {
+    const userID = app.getArgument('UPDATES_USER_ID');
     if (app.isPermissionGranted()) {
       db.collection(FirestoreNames.USERS)
         .add({
           [FirestoreNames.INTENT]: Intents.TELL_LATEST_TIP,
-          [FirestoreNames.USER_ID]: app.getUser().userId
+          [FirestoreNames.USER_ID]: userID
         })
         .then(function (docRef) {
           app.tell("Ok, I'll start alerting you");
@@ -194,18 +202,21 @@ exports.aogTips = functions.https.onRequest((request, response) => {
     }
   }
 
+  // Start opt-in flow for daily updates
   function configureUpdates (app, category) {
     app.askToRegisterDailyUpdate(
-      'tell_tip',
+      'tell.tip',
       [{name: Parameters.CATEGORY, textValue: category}]
     );
   }
 
+  // Utility function to ask the category when the user opts-in for daily updates
   function askCategory (app) {
     app.data[ASK_CATEGORY_FLAG] = true;
     app.ask('For which category do you want to receive daily updates?');
   }
 
+  // Perform some string matching on the user input to determine what to do
   function rawInput (app) {
     const userInput = app.getRawInput();
     console.log(userInput);
@@ -236,18 +247,23 @@ exports.aogTips = functions.https.onRequest((request, response) => {
     }
   }
 
+  // Map intents to handling function
   const intentMap = new Map();
   intentMap.set(Intents.TELL_TIP, tellTip);
   intentMap.set(Intents.TELL_LATEST_TIP, tellLatestTip);
   intentMap.set(Intents.WELCOME, welcome);
   intentMap.set(app.StandardIntents.CONFIGURE_UPDATES, configureUpdates);
-  intentMap.set(Intents.FINISH_UPDATE_SETUP, finishUpdateSetup);
+  intentMap.set(app.StandardIntents.REGISTER_UPDATE, finishUpdateSetup);
   intentMap.set(Intents.SETUP_PUSH, setupPush);
   intentMap.set(app.StandardIntents.PERMISSION, finishPushSetup);
   intentMap.set(app.StandardIntents.TEXT, rawInput);
   app.handleRequest(intentMap);
 });
 
+/** 
+ * Everytime a tip is added to the Firestore DB, this function runs and sends
+ * notifications to the subscribed users.
+ **/
 exports.createTip = functions.firestore
   .document(`${FirestoreNames.TIPS}/{tipId}`)
   .onCreate(event => {
@@ -301,6 +317,7 @@ exports.createTip = functions.firestore
     return 0;
   });
 
+// Use this function to restore the content of the tips database.
 exports.restoreTipsDB = functions.https.onRequest((request, response) => {
   db.collection(FirestoreNames.TIPS)
     .get()
