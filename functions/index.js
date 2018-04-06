@@ -18,7 +18,7 @@ const { ActionsSdkApp } = require('actions-on-google');
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 const db = admin.firestore();
 
 /** Intent constants */
@@ -87,8 +87,8 @@ exports.aogTips = functions.https.onRequest((request, response) => {
           .addSimpleResponse(tip.get(FirestoreNames.TIP))
           .addBasicCard(card);
         if (!app.userStorage[DAILY_NOTIFICATION_ASKED]) {
-        richResponse.addSuggestions(DAILY_NOTIFICATION_SUGGESTION);
-        app.userStorage[DAILY_NOTIFICATION_ASKED] = true;
+          richResponse.addSuggestions(DAILY_NOTIFICATION_SUGGESTION);
+          app.userStorage[DAILY_NOTIFICATION_ASKED] = true;
         }
         app.ask(richResponse);
       }).catch(function (error) {
@@ -260,13 +260,13 @@ exports.aogTips = functions.https.onRequest((request, response) => {
   app.handleRequest(intentMap);
 });
 
-/** 
+/**
  * Everytime a tip is added to the Firestore DB, this function runs and sends
  * notifications to the subscribed users.
  **/
 exports.createTip = functions.firestore
   .document(`${FirestoreNames.TIPS}/{tipId}`)
-  .onCreate(event => {
+  .onCreate((snap, context) => {
     const request = require('request');
     // TODO: check if I can update to google-auth library
     const google = require('googleapis');
