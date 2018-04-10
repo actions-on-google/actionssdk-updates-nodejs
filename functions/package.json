@@ -1,5 +1,5 @@
 {
-  "name": "dialogflow-updates",
+  "name": "actionssdk-updates",
   "description": "A sample for the Actions on Google updates API.",
   "version": "0.0.1",
   "private": true,
@@ -15,20 +15,15 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "actions-on-google": "^1.8.1",
-    "firebase-admin": "^5.8.2",
-    "firebase-functions": "^0.7.5",
+    "actions-on-google": "^2.0.0",
+    "firebase-admin": "^5.12.0",
+    "firebase-functions": "^1.0.1",
     "google-gax": "^0.14.5",
     "googleapis": "^23.0.2",
     "request": "^2.83.0"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-semistandard": "^11.0.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint": "^4.19.0",
+    "eslint-config-google": "^0.9.1"
   }
 }
