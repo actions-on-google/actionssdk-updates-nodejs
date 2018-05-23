@@ -156,7 +156,7 @@ function askPermissionToNotify(conv) {
 function handlePermissionResponse(conv, params) {
   console.log('intent.PERMISSION - register for update');
   if (conv.arguments.get('PERMISSION')) {
-    const userId = conv.user.id;
+    const userId = conv.arguments.get('UPDATES_USER_ID');
     return registerUserForUpdate(userId, 'tell.latest.tip')
       .then((docRef) => {
         conv.close(`Ok, I'll start alerting you.`);
