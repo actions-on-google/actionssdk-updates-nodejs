@@ -20,12 +20,12 @@
           "name": "tell.tip",
           "parameters": [{
             "name": "category",
-            "type": "SchemaOrg_Text"
+            "type": "org.schema.type.Text"
           }],
           "trigger": {
             "queryPatterns": [
-              "$SchemaOrg_Text:category",
-              "$SchemaOrg_Text:category category"
+              "$org.schema.type.Text:category",
+              "$org.schema.type.Text:category category"
             ]
           }
         }
