@@ -14,6 +14,7 @@
 'use strict';
 
 const { aogTips } = require('./aog-webhook');
+
 const {
   tellLatestTip,
   tellRandomTip,
@@ -21,8 +22,9 @@ const {
   restoreTipsDB,
   getUsersRegisteredForNotification,
   authorizeAndSendNotification,
-  registerToSendNotification,
 } = require('./http-webhook');
+
+const { tipCreated } = require('./tip-service');
 
 // NOTE: Only aogTips is required for Actions on Google. The rest are HTTP
 // functions that make it easier to debug specific parts of the app.
@@ -34,5 +36,5 @@ module.exports = {
   restoreTipsDB,
   getUsersRegisteredForNotification,
   authorizeAndSendNotification,
-  registerToSendNotification,
+  tipCreated,
 };

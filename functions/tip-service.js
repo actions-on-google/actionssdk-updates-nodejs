@@ -184,7 +184,7 @@ function getUsersRegisteredForNotification(intent) {
  */
 function authorize() {
   console.log('authorizing ..');
-  const google = require('googleapis');
+  const { google } = require('googleapis');
   const serviceAccount = require('./service-account.json');
   const jwtClient = new google.auth.JWT(
     serviceAccount.client_email, null, serviceAccount.private_key,
@@ -275,9 +275,8 @@ exports.authorizeAndSendNotification = authorizeAndSendNotification;
  * Registers a listener to send a notification to registered users when a new
  * tip is created.
  */
-exports.registerToSendNotification = () => {
+exports.tipCreated =
   functions.firestore.document(`${FirestoreNames.TIPS}/{tipId}`)
     .onCreate((snap, context) => {
-      authorizeAndSendNotification();
+      return authorizeAndSendNotification();
     });
-};

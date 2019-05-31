@@ -43,21 +43,18 @@ const Parameters = {
 const RANDOM_CATEGORY = 'random';
 const RECENT_TIP = 'most recent';
 const CATEGORIES = 'categories';
-const DAILY_NOTIFICATION_SUGGESTION = 'Register for daily updates';
+const DAILY_NOTIFICATION_SUGGESTION = 'Send daily updates';
 const ASK_CATEGORY_FLAG = 'ask_category';
 const PUSH_NOTIFICATION_SUGGESTION = 'Alert me of new tips';
 const DAILY_NOTIFICATION_ASKED = 'daily_notification_asked';
 const PUSH_NOTIFICATION_ASKED = 'push_notification_asked';
 
-const MSG_AUDIO_WELCOME = 'Hi! Welcome to Actions on Google Tips! I can' +
-  ' offer you tips for Actions on Google. To hear the most recent tip, say' +
-  ' "most recent". To hear a random tip, say "random". ';
-
-const MSG_WELCOME_MESSAGE = 'Hi! Welcome to Actions on Google Tips! I can' +
-  ' offer you tips for Actions on Google.';
-
-const MSG_NO_TIP = 'Unfortunately there are no tips to offer at this time.' +
-  ' Please check again later.';
+const MSG_AUDIO_WELCOME = 'Hi! Welcome to Actions on Google Tips! To learn ' +
+  'about user engagement you will need to switch to a screened device.';
+const MSG_WELCOME_MESSAGE = 'Hi! Welcome to Actions on Google Tips! I can ' +
+  'offer you tips for Actions on Google.';
+const MSG_NO_TIP = 'Unfortunately there are no tips to offer at this time. ' +
+  'Please check again later.';
 
 /**
  * @param {Conversation} conv
@@ -75,9 +72,6 @@ function hasScreenOutput(conv) {
 function renderTip(conv, tip) {
   if (!tip) {
     return conv.ask(MSG_NO_TIP);
-  }
-  if (!hasScreenOutput(conv)) {
-    return conv.close(tip.tip);
   }
   conv.ask(
     tip.tip,
@@ -248,8 +242,10 @@ function handleRawInput(conv, userInput) {
  * @return {Promise}
  */
 function handleMain(conv) {
+  // User engagement features aren't currently supported on speaker-only devices
+  // See docs: https://developers.google.com/actions/assistant/updates/overview
   if (!hasScreenOutput(conv)) {
-    return conv.ask(MSG_AUDIO_WELCOME);
+    return conv.close(MSG_AUDIO_WELCOME);
   }
   conv.ask(MSG_WELCOME_MESSAGE);
   return renderCategories(conv);

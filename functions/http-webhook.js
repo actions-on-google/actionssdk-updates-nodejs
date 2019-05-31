@@ -26,7 +26,6 @@ const {
   restoreTipsDB,
   getUsersRegisteredForNotification,
   authorizeAndSendNotification,
-  registerToSendNotification,
 } = require('./tip-service');
 
 exports.tellRandomTip = functions.https.onRequest((req, res) => {
@@ -72,8 +71,3 @@ exports.authorizeAndSendNotification =
       res.send('send notification successful');
     });
   });
-
-exports.registerToSendNotification = functions.https.onRequest((req, res) => {
-  registerToSendNotification();
-  res.send('Successfully registered for notifications on new tips');
-});
