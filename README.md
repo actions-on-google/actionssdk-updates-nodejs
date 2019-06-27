@@ -47,8 +47,8 @@ After hearing a tip about developing Actions for the Google Assistant, users can
 https://${REGION}-${PROJECT_ID}.cloudfunctions.net/restoreTipsDB
 ```
 #### Configure Daily Updates and Notifications
-1. Back in the [Actions console](https://console.actions.google.com), from the pop up window > select **OK**.
-1. From the [Actions on Google console](https://console.actions.google.com) > under **Build** > **Actions**
+1. In the [Actions console](https://console.actions.google.com), from the pop up window > select **OK**.
+1. From the top menu **Develop** > **Actions** (left nav)
 1. To setup Daily Updates:
     + Select the `Tell a tip` intent > under **User engagement** > **Enable** `Would you like to offer daily updates to users?` > add a title `Advice Alert` > **Save**
     + Select the `Tell the latest tip` intent > under **User engagement** > **Enable** `Would you like to send push notifications? If yes, user permission will be needed` > add a title `Latest Tip Alert` > **Save**
