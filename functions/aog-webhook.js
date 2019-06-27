@@ -51,6 +51,8 @@ const PUSH_NOTIFICATION_ASKED = 'push_notification_asked';
 
 const MSG_AUDIO_WELCOME = 'Hi! Welcome to Actions on Google Tips! To learn ' +
   'about user engagement you will need to switch to a screened device.';
+const MSG_AUDIO_GUEST = 'Hi! Welcome to Actions on Google Tips! To learn ' +
+  `about user engagement you'll need to be a verified user.`;
 const MSG_WELCOME_MESSAGE = 'Hi! Welcome to Actions on Google Tips! I can ' +
   'offer you tips for Actions on Google.';
 const MSG_NO_TIP = 'Unfortunately there are no tips to offer at this time. ' +
@@ -246,6 +248,9 @@ function handleMain(conv) {
   // See docs: https://developers.google.com/actions/assistant/updates/overview
   if (!hasScreenOutput(conv)) {
     return conv.close(MSG_AUDIO_WELCOME);
+  }
+  if (conv.user.verification !== 'VERIFIED') {
+    return conv.close(MSG_AUDIO_GUEST);
   }
   conv.ask(MSG_WELCOME_MESSAGE);
   return renderCategories(conv);
