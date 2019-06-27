@@ -18,7 +18,7 @@ After hearing a tip about developing Actions for the Google Assistant, users can
 
 ### Configuration
 #### Actions Console
-1. From the [Actions on Google Console](https://console.actions.google.com/), add a new project (this will become your *Project ID*) > **Create Project** > under **More options** select **Actions SDK** > keep the **Use Actions SDK to add Actions** window open, will revisit in a later step.
+1. From the [Actions on Google Console](https://console.actions.google.com/), New project (this will become your *Project ID*) > **Create project** > under **More options** select **Actions SDK** > keep the **Use Actions SDK to add Actions** window open, will revisit in a later step.
 
 #### Cloud Platform Console
 1. From the [Cloud Platform console](https://console.cloud.google.com/), find and select your Actions on Google **Project ID**
@@ -52,7 +52,7 @@ https://${REGION}-${PROJECT_ID}.cloudfunctions.net/restoreTipsDB
 1. To setup Daily Updates:
     + Select the `Tell a tip` intent > under **User engagement** > **Enable** `Would you like to offer daily updates to users?` > add a title `Advice Alert` > **Save**
     + Select the `Tell the latest tip` intent > under **User engagement** > **Enable** `Would you like to send push notifications? If yes, user permission will be needed` > add a title `Latest Tip Alert` > **Save**
-1. From the left menu under **Test** > select **Simulator** to open the Actions on Google simulator then say or type `Talk to my test app`.
+1. From the top menu click **Test** to open the Actions on Google simulator then say or type `Talk to my test app`.
 1. To test daily updates, choose a category. Below the tip, the app will show a suggestion chip to subscribe for daily updates.
 1. To test push notifications, choose to hear the latest tip. Below the tip, the app will show
 a suggestion chip to subscribe for push notifications.
