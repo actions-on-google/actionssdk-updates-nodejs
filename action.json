@@ -4,7 +4,7 @@
         "description": "Default Welcome Intent",
         "name": "MAIN",
         "fulfillment": {
-          "conversationName": "welcome"
+          "conversationName": "conversation"
         },
         "intent": {
           "name": "actions.intent.MAIN"
@@ -14,10 +14,10 @@
         "description": "Tell a tip",
         "name": "Tell tip",
         "fulfillment": {
-          "conversationName": "tellTip"
+          "conversationName": "conversation"
         },
         "intent": {
-          "name": "tell.tip",
+          "name": "Tell Tip",
           "parameters": [{
             "name": "category",
             "type": "org.schema.type.Text"
@@ -32,12 +32,12 @@
       },
       {
         "description": "Tell the latest tip",
-        "name": "Tell latst tip",
+        "name": "Tell latest tip",
         "fulfillment": {
-          "conversationName": "tellLatestTip"
+          "conversationName": "conversation"
         },
         "intent": {
-          "name": "tell.latest.tip",
+          "name": "Tell Latest Tip",
           "trigger": {
             "queryPatterns": [
               "the latest tip"
@@ -47,9 +47,9 @@
       },
       {
         "description": "Configure Update Intent",
-        "name": "Configure update",
+        "name": "Configure updates",
         "fulfillment": {
-          "conversationName": "configureUpdate"
+          "conversationName": "conversation"
         },
         "intent": {
           "name": "actions.intent.CONFIGURE_UPDATES"
@@ -57,25 +57,9 @@
       }
     ],
     "conversations": {
-      "welcome": {
-        "name": "welcome",
-        "url": "YOUR_ENDPOINT_URL",
-        "fulfillmentApiVersion": 2
-      },
-      "tellTip": {
-        "name": "tellTip",
-        "url": "YOUR_ENDPOINT_URL",
-        "fulfillmentApiVersion": 2
-      },
-      "tellLatestTip": {
-        "name": "tellLatestTip",
-        "url": "YOUR_ENDPOINT_URL",
-        "fulfillmentApiVersion": 2
-      },
-      "configureUpdate": {
-        "name": "configureUpdate",
-        "url": "YOUR_ENDPOINT_URL",
-        "fulfillmentApiVersion": 2
+      "conversation": {
+        "name": "conversation",
+        "url": "YOUR_ENDPOINT_URL"
       }
     }
   }

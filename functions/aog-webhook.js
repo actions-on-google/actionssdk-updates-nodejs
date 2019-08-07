@@ -55,6 +55,8 @@ const MSG_AUDIO_GUEST = 'Hi! Welcome to Actions on Google Tips! To learn ' +
   `about user engagement you'll need to be a verified user.`;
 const MSG_WELCOME_MESSAGE = 'Hi! Welcome to Actions on Google Tips! I can ' +
   'offer you tips for Actions on Google.';
+const MSG_CONFIGURE_UPDATES = 'I can provide you with tips for Actions on  ' +
+  'Google daily for a variety of categories.';
 const MSG_NO_TIP = 'Unfortunately there are no tips to offer at this time. ' +
   'Please check again later.';
 
@@ -122,7 +124,7 @@ function tellRandomTip(conv, category) {
  * @return {Promise}
  */
 function tellLatestTip(conv) {
-  console.log('tellLatestTip ');
+  console.log('Tell Latest Tip');
   return getLatestTip()
   .then(renderTip.bind(null, conv))
   .then(() => {
@@ -141,7 +143,7 @@ function tellLatestTip(conv) {
 function askPermissionToNotify(conv) {
   // NOTE: User notification must be first enabled in the Actions Console.
   // Actions -> <Action> -> User updates and notifications.
-  conv.ask(new UpdatePermission({intent: 'tell.latest.tip'}));
+  conv.ask(new UpdatePermission({intent: 'Tell Latest Tip'}));
 }
 
 /**
@@ -150,7 +152,7 @@ function askPermissionToNotify(conv) {
  * @return {Promise}
  */
 function handlePermissionResponse(conv, params) {
-  console.log('intent.PERMISSION - register for update');
+  console.log('actions.intent.PERMISSION handler');
   if (conv.arguments.get('PERMISSION')) {
     const userId = conv.arguments.get('UPDATES_USER_ID');
     return registerUserForUpdate(userId, 'tell.latest.tip')
@@ -171,17 +173,22 @@ function askCategoryForDailyUpdates(conv) {
   return renderCategories(conv);
 }
 
+function handleConfigureUpdates(conv) {
+  conv.ask(MSG_CONFIGURE_UPDATES);
+  return askCategoryForDailyUpdates(conv)
+}
+
 /**
  * Registers the user for update once user selects a category.
  * @param {Conversation} conv
  * @param {string} category
  */
 function registerForDailyUpdates(conv, category) {
-  console.log('configure Updates - ' + category);
+  console.log('Register updates - ' + category);
   // NOTE: To enable updates for an intent, it must be enabled in the
   // Actions console. Actions -> Intent -> User updates and notifications.
   conv.ask(new RegisterUpdate({
-    intent: 'tell.tip',
+    intent: 'Tell Tip',
     arguments: [{name: Parameters.CATEGORY, textValue: category}],
     frequency: 'DAILY',
   }));
@@ -193,7 +200,7 @@ function registerForDailyUpdates(conv, category) {
  * @param {*} registered
  */
 function handleUpdateResponse(conv, params, registered) {
-  console.log('intent.REGISTER_UPDATE ', params, registered);
+  console.log('actions.intent.REGISTER_UPDATE handler');
   if (registered && registered.status === 'OK') {
     conv.close(`Ok, I'll start giving you daily updates.`);
   } else {
@@ -259,19 +266,19 @@ function handleMain(conv) {
 /**
  * Action to tell a random tip.
  */
-app.intent('tell.tip', (conv) => {
+app.intent('Tell Tip', (conv) => {
   return tellRandomTip(conv);
 });
 
 /**
  * Action to tell the latest tip.
  */
-app.intent('tell.latest.tip', tellLatestTip);
+app.intent('Tell Latest Tip', tellLatestTip);
 
 /**
  * Action to setup push notification.
  */
-app.intent('setup.push', askPermissionToNotify);
+app.intent('Setup Push', askPermissionToNotify);
 
 /**
  * Action that is invoked by the system to indicate that the user has
@@ -285,6 +292,11 @@ app.intent('actions.intent.PERMISSION', handlePermissionResponse);
  * registering for updates.
  */
 app.intent('actions.intent.REGISTER_UPDATE', handleUpdateResponse);
+
+/**
+ * Action that is invoked for the CONFIGURE_UPDATES built-in intent.
+ */
+app.intent('actions.intent.CONFIGURE_UPDATES', handleConfigureUpdates);
 
 /**
  * Action to handle defaul welcome message.
