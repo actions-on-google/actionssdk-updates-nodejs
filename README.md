@@ -1,6 +1,6 @@
 # Actions on Google: Daily Updates & Push Notifications Sample
 
-This sample demonstrates Actions on Google user engagement features including daily updates and push notifications -- using [Actions SDK](https://developers.google.com/actions/sdk/) in [Node.js](https://github.com/actions-on-google/actions-on-google-nodejs) and deployed on [Cloud Functions for Firebase](https://firebase.google.com/docs/functions/).
+This sample demonstrates Actions on Google user engagement features including daily updates and push notifications -- using [Actions SDK](https://developers.google.com/assistant/actions/actions-sdk/) in [Node.js](https://github.com/actions-on-google/actions-on-google-nodejs) and deployed on [Cloud Functions for Firebase](https://firebase.google.com/docs/functions/).
 
 After hearing a tip about developing Actions for the Google Assistant, users can subscribe to receive additional tips through notifications. There are two subscription options are available:
 * If a category is selected, you are given the option to receive daily notifications at a fixed time; the notification deeplinks into receiving a tip from a category in a conversation.
@@ -13,7 +13,7 @@ After hearing a tip about developing Actions for the Google Assistant, users can
 1. Install the [Firebase Functions CLI](https://firebase.google.com/docs/functions/get-started#set_up_and_initialize_functions_sdk)
     + We recommend using version 6.5.0, `npm install -g firebase-tools@6.5.0`
     + Run `firebase login` with your Google account
-1. [Install the gactions CLI](https://developers.google.com/actions/tools/gactions-cli)
+1. [Install the gactions CLI](https://developers.google.com/assistant/tools/gactions-cli)
     + You may need to grant execute permission, ‘chmod +x ./gactions’
 
 ### Configuration
@@ -68,10 +68,10 @@ a suggestion chip to subscribe for push notifications.
 + You can also use the Actions on Google Console simulator to test most features and preview on-device behavior.
 
 ## References & Issues
-+ Questions? Go to [StackOverflow](https://stackoverflow.com/questions/tagged/actions-on-google), [Assistant Developer Community on Reddit](https://www.reddit.com/r/GoogleAssistantDev/) or [Support](https://developers.google.com/actions/support/).
++ Questions? Go to [StackOverflow](https://stackoverflow.com/questions/tagged/actions-on-google), [Assistant Developer Community on Reddit](https://www.reddit.com/r/GoogleAssistantDev/) or [Support](https://developers.google.com/assistant/support).
 + For bugs, please report an issue on Github.
-+ Getting started with [Actions SDK Guide](https://developers.google.com/actions/sdk/).
-+ Actions on Google [Documentation](https://developers.google.com/actions/extending-the-assistant)
++ Getting started with [Actions SDK Guide](https://developers.google.com/assistant/actions/actions-sdk/).
++ Actions on Google [Documentation](https://developers.google.com/assistant)
 + Actions on Google [Codelabs](https://codelabs.developers.google.com/?cat=Assistant).
 
 ## Make Contributions
